@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bora dar uma curtida comigo?</title>
+  
+  <!-- Biblioteca para converter o convite em imagem e permitir o download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); 
+      margin: 0; 
+      padding: 20px; 
+    }
+    .card { 
+      background: white; 
+      padding: 2rem; 
+      border-radius: 1.5rem; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+      text-align: center; 
+      max-width: 420px; 
+      width: 100%; 
+      transition: all 0.3s ease; 
+    }
+    .btn { 
+      padding: 12px 24px; 
+      border: none; 
+      border-radius: 12px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      transition: transform 0.2s; 
+      margin: 8px; 
+      font-size: 1rem; 
+    }
+    .btn-sim { background: #22c55e; color: white; }
+    .btn-nao { background: #ef4444; color: white; }
+    .btn-primary { background: #ec4899; color: white; width: 100%; margin: 15px 0 0 0; }
+    .hidden { display: none; }
+    
+    .form-group { text-align: left; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: #475569; margin-bottom: 4px; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+
+    /* Estilo do Convite Final */
+    .convite-card {
+      background: #fff;
+      border: 3px double #ec4899;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(236,72,153,0.15);
+      margin-bottom: 15px;
+    }
+    .convite-header { color: #db2777; font-size: 1.5rem; margin-bottom: 5px; }
+    .convite-detail { background: #fdf2f8; padding: 8px 12px; border-radius: 8px; margin: 8px 0; text-align: left; font-size: 0.9rem; color: #831843; }
+  </style>
+</head>
+<body>
+
+  <!-- Passo 1: Pergunta principal -->
+  <div class="card" id="step1">
+    <h2>Bora dar uma curtida comigo? 😉</h2>
+    <div style="min-height: 80px; display: flex; justify-content: center; align-items: center;">
+      <button class="btn btn-sim" id="btnSim" onclick="proximoPasso(2)">SIM</button>
+      <button class="btn btn-nao" id="btnNao" onclick="diminuirNao()">NÃO</button>
+    </div>
+  </div>
+
+  <!-- Passo 2: Escolha da Data, Hora e Local -->
+  <div class="card hidden" id="step2">
+    <h2>Sabia que dirias SIM! 🔥</h2>
+    <p style="color: #64748b; font-size: 0.9rem;">Escolha os detalhes do nosso rolê:</p>
+    
+    <div class="form-group">
+      <label>Data:</label>
+      <input type="date" id="inputData">
+    </div>
+    <div class="form-group">
+      <label>Horário:</label>
+      <input type="time" id="inputHora" value="20:00">
+    </div>
+    <div class="form-group">
+      <label>Local:</label>
+      <input type="text" id="inputLocal" placeholder="Ex: Praia, Bar ou Cinema">
+    </div>
+
+    <button class="btn btn-primary" onclick="gerarConvite()">Confirmar e Ver Convite</button>
+  </div>
+
+  <!-- Passo 3: Apresentação e Download do Convite -->
+  <div class="card hidden" id="step3">
+    <div id="conviteArea" class="convite-card">
+      <div style="font-size: 1.8rem;">🎉</div>
+      <div class="convite-header">Convite Confirmado!</div>
+      <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #9d174d;">Partiu curtida!</p>
+      
+      <div class="convite-detail"><strong>📅 Data:</strong> <span id="lblData"></span></div>
+      <div class="convite-detail"><strong>⏰ Hora:</strong> <span id="lblHora"></span></div>
+      <div class="convite-detail"><strong>📍 Local:</strong> <span id="lblLocal"></span></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="baixarConvite()">📥 Baixar Convite (Imagem)</button>
+  </div>
+
+  <script>
+    let escalaNao = 1;
+
+    function diminuirNao() {
+      escalaNao -= 0.25;
+      const btnNao = document.getElementById('btnNao');
+      if (escalaNao <= 0.1) {
+        btnNao.style.display = 'none';
+      } else {
+        btnNao.style.transform = `scale(${escalaNao})`;
+      }
+    }
+
+    function proximoPasso(passo) {
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step3').classList.add('hidden');
+      document.getElementById(`step${passo}`).classList.remove('hidden');
+    }
+
+    function gerarConvite() {
+      const dataVal = document.getElementById('inputData').value;
+      const horaVal = document.getElementById('inputHora').value;
+      const localVal = document.getElementById('inputLocal').value || 'Combinar depois';
+
+      if (!dataVal) {
+        alert('Por favor, selecione uma data!');
+        return;
+      }
+
+      const partesData = dataVal.split('-');
+      const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
+
+      document.getElementById('lblData').innerText = dataFormatada;
+      document.getElementById('lblHora').innerText = horaVal;
+      document.getElementById('lblLocal').innerText = localVal;
+
+      proximoPasso(3);
+    }
+
+    function baixarConvite() {
+      const conviteElem = document.getElementById('conviteArea');
+      html2canvas(conviteElem).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Bora_Curtir_Convite.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
