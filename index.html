@@ -5,78 +5,194 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bora dar uma curtida comigo?</title>
   
-  <!-- Biblioteca para converter o convite em imagem e permitir o download -->
+  <!-- Meta tags Open Graph para previsualização em redes sociais -->
+  <meta property="og:title" content="Bora dar uma curtida comigo? 😉" />
+  <meta property="og:description" content="Clique no link para me responder!" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bibliotecas para download em Imagem (PNG) e PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    
     body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      min-height: 100vh; 
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 50%, #fecdd3 100%);
       display: flex; 
       justify-content: center; 
       align-items: center; 
-      min-height: 100vh; 
-      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); 
       margin: 0; 
       padding: 20px; 
+      color: #1e293b;
     }
+
     .card { 
-      background: white; 
-      padding: 2rem; 
-      border-radius: 1.5rem; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+      background: #ffffff; 
+      border: 1px solid rgba(251, 113, 133, 0.3);
+      padding: 2.5rem 2rem; 
+      border-radius: 2rem; 
+      box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.15); 
       text-align: center; 
-      max-width: 420px; 
+      max-width: 440px; 
       width: 100%; 
-      transition: all 0.3s ease; 
+      animation: fadeIn 0.4s ease-out;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #be123c;
+      margin-top: 0;
+    }
+
     .btn { 
-      padding: 12px 24px; 
+      padding: 14px 24px; 
       border: none; 
-      border-radius: 12px; 
-      font-weight: bold; 
+      border-radius: 14px; 
+      font-weight: 700; 
       cursor: pointer; 
-      transition: transform 0.2s; 
-      margin: 8px; 
-      font-size: 1rem; 
+      transition: all 0.2s ease; 
+      margin: 6px; 
+      font-size: 0.95rem; 
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .btn-sim { background: #22c55e; color: white; }
-    .btn-nao { background: #ef4444; color: white; }
-    .btn-primary { background: #ec4899; color: white; width: 100%; margin: 15px 0 0 0; }
+
+    .btn-sim { 
+      background: linear-gradient(135deg, #10b981, #059669); 
+      color: white; 
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+    }
+    .btn-sim:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
+
+    .btn-nao { 
+      background: linear-gradient(135deg, #f43f5e, #e11d48); 
+      color: white; 
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-primary { 
+      background: linear-gradient(135deg, #fb7185, #e11d48); 
+      color: white; 
+      width: 100%; 
+      margin-top: 15px; 
+      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      width: 100%;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+    .btn-whatsapp:hover { transform: translateY(-2px); background: #20ba5a; }
+
+    .btn-pdf {
+      background: #0284c7;
+      color: white;
+      width: 100%;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
+    .btn-pdf:hover { transform: translateY(-2px); background: #0369a1; }
+
     .hidden { display: none; }
     
-    .form-group { text-align: left; margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: #475569; margin-bottom: 4px; }
-    .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+    .form-group { text-align: left; margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 6px; }
+    .form-group input { 
+      width: 100%; 
+      padding: 12px; 
+      background: #f8fafc;
+      border: 1px solid #cbd5e1; 
+      border-radius: 12px; 
+      font-size: 0.95rem; 
+      color: #0f172a;
+      outline: none;
+    }
+    .form-group input:focus { border-color: #e11d48; background: #ffffff; }
 
-    /* Estilo do Convite Final */
+    /* Estilo do Convite Final Claro */
     .convite-card {
-      background: #fff;
-      border: 3px double #ec4899;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: 0 4px 15px rgba(236,72,153,0.15);
+      background: #ffffff;
+      border: 2px solid #fb7185;
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.1);
       margin-bottom: 15px;
     }
-    .convite-header { color: #db2777; font-size: 1.5rem; margin-bottom: 5px; }
-    .convite-detail { background: #fdf2f8; padding: 8px 12px; border-radius: 8px; margin: 8px 0; text-align: left; font-size: 0.9rem; color: #831843; }
+
+    .convite-tag {
+      background: linear-gradient(90deg, #fb7185, #e11d48);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .convite-header { 
+      font-size: 1.8rem; 
+      font-weight: 800;
+      color: #be123c;
+      margin-bottom: 4px;
+    }
+
+    .convite-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .convite-detail { 
+      background: #fff1f2; 
+      border: 1px solid #fecdd3;
+      padding: 12px 16px; 
+      border-radius: 12px; 
+      text-align: left; 
+      font-size: 0.95rem; 
+      color: #334155; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .convite-detail strong { color: #e11d48; }
   </style>
 </head>
 <body>
 
-  <!-- Passo 1: Pergunta principal -->
+  <!-- Passo 1: Pergunta inicial -->
   <div class="card" id="step1">
     <h2>Bora dar uma curtida comigo? 😉</h2>
-    <div style="min-height: 80px; display: flex; justify-content: center; align-items: center;">
+    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Prometo que vai valer a pena!</p>
+    <div style="min-height: 90px; display: flex; justify-content: center; align-items: center;">
       <button class="btn btn-sim" id="btnSim" onclick="proximoPasso(2)">SIM</button>
       <button class="btn btn-nao" id="btnNao" onclick="diminuirNao()">NÃO</button>
     </div>
   </div>
 
-  <!-- Passo 2: Escolha da Data, Hora e Local -->
+  <!-- Passo 2: Formulário de detalhes -->
   <div class="card hidden" id="step2">
     <h2>Sabia que dirias SIM! 🔥</h2>
-    <p style="color: #64748b; font-size: 0.9rem;">Escolha os detalhes do nosso rolê:</p>
+    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Define os detalhes do nosso rolê:</p>
     
     <div class="form-group">
       <label>Data:</label>
@@ -88,29 +204,37 @@
     </div>
     <div class="form-group">
       <label>Local:</label>
-      <input type="text" id="inputLocal" placeholder="Ex: Praia, Bar ou Cinema">
+      <input type="text" id="inputLocal" placeholder="Ex: Restaurante Panorama, Luanda">
     </div>
 
-    <button class="btn btn-primary" onclick="gerarConvite()">Confirmar e Ver Convite</button>
+    <button class="btn btn-primary" onclick="gerarConvite()">Gerar Convite Lindo ✨</button>
   </div>
 
-  <!-- Passo 3: Apresentação e Download do Convite -->
+  <!-- Passo 3: Exibição, PDF e Partilha no WhatsApp -->
   <div class="card hidden" id="step3">
     <div id="conviteArea" class="convite-card">
-      <div style="font-size: 1.8rem;">🎉</div>
-      <div class="convite-header">Convite Confirmado!</div>
-      <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #9d174d;">Partiu curtida!</p>
+      <div class="convite-tag">✨ Convite Especial ✨</div>
+      <div class="convite-header">Partiu Curtida! 🎉</div>
+      <p style="margin: 0 0 15px 0; font-size: 0.85rem; color: #64748b;">Presença confirmada com sucesso!</p>
       
-      <div class="convite-detail"><strong>📅 Data:</strong> <span id="lblData"></span></div>
-      <div class="convite-detail"><strong>⏰ Hora:</strong> <span id="lblHora"></span></div>
-      <div class="convite-detail"><strong>📍 Local:</strong> <span id="lblLocal"></span></div>
+      <div class="convite-grid">
+        <div class="convite-detail"><span>📅 <strong>Data:</strong></span> <span id="lblData"></span></div>
+        <div class="convite-detail"><span>⏰ <strong>Hora:</strong></span> <span id="lblHora"></span></div>
+        <div class="convite-detail"><span>📍 <strong>Local:</strong></span> <span id="lblLocal"></span></div>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 0.85rem; color: #be123c; font-style: italic;">"O melhor encontro é aquele que a gente não vê o tempo passar." ❤️</p>
     </div>
 
-    <button class="btn btn-primary" onclick="baixarConvite()">📥 Baixar Convite (Imagem)</button>
+    <button class="btn btn-pdf" onclick="baixarPDF()">📄 Baixar Convite em PDF</button>
+    <button class="btn btn-whatsapp" onclick="partilharWhatsApp()">💬 Partilhar no WhatsApp</button>
   </div>
 
   <script>
     let escalaNao = 1;
+    let dataFormatadaGlobal = '';
+    let horaGlobal = '';
+    let localGlobal = '';
 
     function diminuirNao() {
       escalaNao -= 0.25;
@@ -131,32 +255,43 @@
 
     function gerarConvite() {
       const dataVal = document.getElementById('inputData').value;
-      const horaVal = document.getElementById('inputHora').value;
-      const localVal = document.getElementById('inputLocal').value || 'Combinar depois';
+      horaGlobal = document.getElementById('inputHora').value;
+      localGlobal = document.getElementById('inputLocal').value || 'A combinar';
 
       if (!dataVal) {
-        alert('Por favor, selecione uma data!');
+        alert('Por favor, escolha uma data!');
         return;
       }
 
       const partesData = dataVal.split('-');
-      const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
+      dataFormatadaGlobal = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 
-      document.getElementById('lblData').innerText = dataFormatada;
-      document.getElementById('lblHora').innerText = horaVal;
-      document.getElementById('lblLocal').innerText = localVal;
+      document.getElementById('lblData').innerText = dataFormatadaGlobal;
+      document.getElementById('lblHora').innerText = horaGlobal;
+      document.getElementById('lblLocal').innerText = localGlobal;
 
       proximoPasso(3);
     }
 
-    function baixarConvite() {
+    function baixarPDF() {
+      const { jsPDF } = window.jspdf;
       const conviteElem = document.getElementById('conviteArea');
-      html2canvas(conviteElem).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Bora_Curtir_Convite.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+
+      html2canvas(conviteElem, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a5');
+        const imgWidth = 120;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 14, 20, imgWidth, imgHeight);
+        pdf.save('Convite_Especial_Curtida.pdf');
       });
+    }
+
+    function partilharWhatsApp() {
+      const mensagem = `🎉 *Convite Confirmado!* 🎉\n\nBora dar uma curtida!\n📅 *Data:* ${dataFormatadaGlobal}\n⏰ *Hora:* ${horaGlobal}\n📍 *Local:* ${localGlobal}\n\n"O melhor encontro é aquele que a gente não vê o tempo passar." ❤️`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
     }
   </script>
 </body>
